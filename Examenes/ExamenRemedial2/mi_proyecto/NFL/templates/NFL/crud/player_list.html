@@ -1,0 +1,72 @@
+{% extends 'NFL/base_nfl.html' %}
+
+{% block nfl_content %}
+<div class="card bg-base-100 shadow-xl">
+    <div class="card-body">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="card-title text-2xl">Player Management</h2>
+            <a href="{% url 'NFL:player_create' %}" class="btn btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                Add Player
+            </a>
+        </div>
+        
+        <div class="overflow-x-auto">
+            <table class="table table-zebra w-full">
+                <thead>
+                    <tr>
+                        <th class="text-primary">Player Name</th>
+                        <th class="text-primary">Number</th>
+                        <th class="text-primary">Position</th>
+                        <th class="text-primary">Team</th>
+                        <th class="text-primary">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for player in players %}
+                    <tr>
+                        <td class="font-semibold">
+                            <a href="{% url 'NFL:player_detail' player.pk %}" class="link link-primary">
+                                {{ player.name }}
+                            </a>
+                        </td>
+                        <td>
+                            <div class="badge badge-primary badge-lg">#{{ player.number }}</div>
+                        </td>
+                        <td>
+                            <div class="badge badge-secondary">{{ player.position }}</div>
+                        </td>
+                        <td>
+                            <a href="{% url 'NFL:team_detail' player.team.pk %}" class="link link-accent">
+                                {{ player.team.name }}
+                            </a>
+                        </td>
+                        <td>
+                            <div class="dropdown dropdown-end">
+                                <label tabindex="0" class="btn btn-sm btn-outline">Actions</label>
+                                <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-44">
+                                    <li><a href="{% url 'NFL:player_detail' player.pk %}">View</a></li>
+                                    <li><a href="{% url 'NFL:player_update' player.pk %}">Edit</a></li>
+                                    <li><a href="{% url 'NFL:player_delete' player.pk %}" class="text-error">Delete</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center text-gray-500 py-8">
+                            <div class="text-center">
+                                <p class="text-lg mb-2">No players found</p>
+                                <a href="{% url 'NFL:player_create' %}" class="btn btn-primary btn-sm">Create First Player</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

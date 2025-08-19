@@ -1,0 +1,68 @@
+{% extends 'NFL/base_nfl.html' %}
+
+{% block nfl_content %}
+<div class="card bg-base-100 shadow-xl max-w-2xl mx-auto">
+    <div class="card-body">
+        <h2 class="card-title text-2xl mb-6">{{ title }}</h2>
+        
+        <form method="post" class="space-y-4">
+            {% csrf_token %}
+            
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text font-medium">Team Name</span>
+                </label>
+                {{ form.name }}
+                {% if form.name.errors %}
+                    <label class="label">
+                        <span class="label-text-alt text-error">{{ form.name.errors.0 }}</span>
+                    </label>
+                {% endif %}
+            </div>
+            
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text font-medium">Venue</span>
+                </label>
+                {{ form.venue }}
+                {% if form.venue.errors %}
+                    <label class="label">
+                        <span class="label-text-alt text-error">{{ form.venue.errors.0 }}</span>
+                    </label>
+                {% endif %}
+            </div>
+            
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text font-medium">Owner Name</span>
+                </label>
+                {{ form.owner_name }}
+                {% if form.owner_name.errors %}
+                    <label class="label">
+                        <span class="label-text-alt text-error">{{ form.owner_name.errors.0 }}</span>
+                    </label>
+                {% endif %}
+            </div>
+            
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text font-medium">Stadium</span>
+                </label>
+                {{ form.stadium }}
+                {% if form.stadium.errors %}
+                    <label class="label">
+                        <span class="label-text-alt text-error">{{ form.stadium.errors.0 }}</span>
+                    </label>
+                {% endif %}
+            </div>
+            
+            <div class="card-actions justify-end space-x-2 pt-4">
+                <a href="{% url 'NFL:team_list' %}" class="btn btn-outline">Cancel</a>
+                <button type="submit" class="btn btn-primary">
+                    {% if team %}Update{% else %}Create{% endif %} Team
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

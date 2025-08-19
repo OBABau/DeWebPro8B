@@ -1,0 +1,90 @@
+{% extends 'NFL/base_nfl.html' %}
+
+{% block nfl_content %}
+<div class="card bg-base-100 shadow-xl">
+    <div class="card-body">
+        <div class="flex justify-between items-start mb-6">
+            <div>
+                <h2 class="card-title text-3xl text-primary">{{ team.name }}</h2>
+                <p class="text-base-content/70">{{ team.venue }}</p>
+                <p class="text-sm mt-1"><strong>Owner:</strong> {{ team.owner_name }}</p>
+            </div>
+            <div class="dropdown dropdown-end">
+                <label tabindex="0" class="btn btn-sm btn-outline">Actions</label>
+                <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-40">
+                    <li><a href="{% url 'NFL:team_update' team.pk %}">Edit</a></li>
+                    <li><a href="{% url 'NFL:team_delete' team.pk %}" class="text-error">Delete</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="card bg-base-200 shadow-md">
+                <div class="card-body">
+                    <h3 class="card-title text-lg text-secondary">Stadium Information</h3>
+                    <p class="text-xl font-semibold">{{ team.stadium.name }}</p>
+                    <p class="text-sm text-base-content/70">Capacity: {{ team.stadium.capacity|floatformat:0 }}</p>
+                    <p class="text-sm text-base-content/70">Box Size: {{ team.stadium.box_size }}</p>
+                    <div class="card-actions justify-end">
+                        <a href="{% url 'NFL:stadium_detail' team.stadium.pk %}" class="btn btn-sm btn-secondary">View Stadium</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stats shadow">
+                <div class="stat">
+                    <div class="stat-title">Total Players</div>
+                    <div class="stat-value text-primary">{{ players.count }}</div>
+                    <div class="stat-desc">Active roster</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="divider">Team Roster</div>
+        
+        {% if players %}
+        <div class="overflow-x-auto mb-6">
+            <table class="table table-zebra w-full">
+                <thead>
+                    <tr>
+                        <th class="text-primary">Player Name</th>
+                        <th class="text-primary">Number</th>
+                        <th class="text-primary">Position</th>
+                        <th class="text-primary">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for player in players %}
+                    <tr>
+                        <td class="font-semibold">
+                            <a href="{% url 'NFL:player_detail' player.pk %}" class="link link-primary">
+                                {{ player.name }}
+                            </a>
+                        </td>
+                        <td>
+                            <div class="badge badge-primary">#{{ player.number }}</div>
+                        </td>
+                        <td>
+                            <div class="badge badge-secondary">{{ player.position }}</div>
+                        </td>
+                        <td>
+                            <a href="{% url 'NFL:player_detail' player.pk %}" class="btn btn-xs btn-outline">View</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-8">
+            <p class="text-base-content/70 mb-4">No players on this team yet.</p>
+            <a href="{% url 'NFL:player_create' %}" class="btn btn-primary btn-sm">Add First Player</a>
+        </div>
+        {% endif %}
+        
+        <div class="card-actions justify-end">
+            <a href="{% url 'NFL:team_list' %}" class="btn btn-outline">Back to Teams</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

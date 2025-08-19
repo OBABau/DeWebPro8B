@@ -1,0 +1,68 @@
+{% extends 'NFL/base_nfl.html' %}
+
+{% block nfl_content %}
+<div class="card bg-base-100 shadow-xl">
+    <div class="card-body">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="card-title text-2xl">Stadium Management</h2>
+            <a href="{% url 'NFL:stadium_create' %}" class="btn btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                Add Stadium
+            </a>
+        </div>
+        
+        <div class="overflow-x-auto">
+            <table class="table table-zebra w-full">
+                <thead>
+                    <tr>
+                        <th class="text-primary">Name</th>
+                        <th class="text-primary">Capacity</th>
+                        <th class="text-primary">Box Size</th>
+                        <th class="text-primary">Teams</th>
+                        <th class="text-primary">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for stadium in stadiums %}
+                    <tr>
+                        <td class="font-semibold">
+                            <a href="{% url 'NFL:stadium_detail' stadium.pk %}" class="link link-primary">
+                                {{ stadium.name }}
+                            </a>
+                        </td>
+                        <td>{{ stadium.capacity|floatformat:0 }}</td>
+                        <td>
+                            <div class="badge badge-outline">{{ stadium.box_size }}</div>
+                        </td>
+                        <td>
+                            <div class="badge badge-info">{{ stadium.teams.count }} team{{ stadium.teams.count|pluralize }}</div>
+                        </td>
+                        <td>
+                            <div class="dropdown dropdown-end">
+                                <label tabindex="0" class="btn btn-sm btn-outline">Actions</label>
+                                <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-44">
+                                    <li><a href="{% url 'NFL:stadium_detail' stadium.pk %}">View</a></li>
+                                    <li><a href="{% url 'NFL:stadium_update' stadium.pk %}">Edit</a></li>
+                                    <li><a href="{% url 'NFL:stadium_delete' stadium.pk %}" class="text-error">Delete</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center text-gray-500 py-8">
+                            <div class="text-center">
+                                <p class="text-lg mb-2">No stadiums found</p>
+                                <a href="{% url 'NFL:stadium_create' %}" class="btn btn-primary btn-sm">Create First Stadium</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

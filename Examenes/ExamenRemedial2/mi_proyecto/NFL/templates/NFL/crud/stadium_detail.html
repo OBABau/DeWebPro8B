@@ -1,0 +1,66 @@
+{% extends 'NFL/base_nfl.html' %}
+
+{% block nfl_content %}
+<div class="card bg-base-100 shadow-xl">
+    <div class="card-body">
+        <div class="flex justify-between items-start mb-6">
+            <div>
+                <h2 class="card-title text-3xl text-primary">{{ stadium.name }}</h2>
+                <p class="text-base-content/70">Stadium Details</p>
+            </div>
+            <div class="dropdown dropdown-end">
+                <label tabindex="0" class="btn btn-sm btn-outline">Actions</label>
+                <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-40">
+                    <li><a href="{% url 'NFL:stadium_update' stadium.pk %}">Edit</a></li>
+                    <li><a href="{% url 'NFL:stadium_delete' stadium.pk %}" class="text-error">Delete</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="stats shadow">
+                <div class="stat">
+                    <div class="stat-title">Capacity</div>
+                    <div class="stat-value text-primary">{{ stadium.capacity|floatformat:0 }}</div>
+                    <div class="stat-desc">Total seats</div>
+                </div>
+            </div>
+            
+            <div class="stats shadow">
+                <div class="stat">
+                    <div class="stat-title">Box Size</div>
+                    <div class="stat-value text-secondary text-2xl">{{ stadium.box_size }}</div>
+                    <div class="stat-desc">Premium seating</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="divider">Teams at this Stadium</div>
+        
+        {% if teams %}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {% for team in teams %}
+            <div class="card bg-base-200 shadow-md">
+                <div class="card-body">
+                    <h3 class="card-title text-lg">{{ team.name }}</h3>
+                    <p class="text-sm text-base-content/70">{{ team.venue }}</p>
+                    <p class="text-sm"><strong>Owner:</strong> {{ team.owner_name }}</p>
+                    <div class="card-actions justify-end">
+                        <a href="{% url 'NFL:team_detail' team.pk %}" class="btn btn-sm btn-primary">View Team</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-8">
+            <p class="text-base-content/70">No teams are currently using this stadium.</p>
+        </div>
+        {% endif %}
+        
+        <div class="card-actions justify-end mt-6">
+            <a href="{% url 'NFL:stadium_list' %}" class="btn btn-outline">Back to Stadiums</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'NFL/base_nfl.html' %}
+
+{% block nfl_content %}
+<div class="card bg-base-100 shadow-xl">
+    <div class="card-body">
+        <div class="flex justify-between items-start mb-6">
+            <div>
+                <h2 class="card-title text-3xl text-primary">{{ player.name }}</h2>
+                <div class="flex items-center gap-2 mt-2">
+                    <div class="badge badge-primary badge-lg">#{{ player.number }}</div>
+                    <div class="badge badge-secondary badge-lg">{{ player.position }}</div>
+                </div>
+                <p class="text-base-content/70 mt-2">{{ player.team.name }}</p>
+            </div>
+            <div class="dropdown dropdown-end">
+                <label tabindex="0" class="btn btn-sm btn-outline">Actions</label>
+                <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-40">
+                    <li><a href="{% url 'NFL:player_update' player.pk %}">Edit</a></li>
+                    <li><a href="{% url 'NFL:player_delete' player.pk %}" class="text-error">Delete</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="card bg-base-200 shadow-md">
+                <div class="card-body">
+                    <h3 class="card-title text-lg text-accent">Player Information</h3>
+                    <div class="space-y-2">
+                        <p><strong>Full Name:</strong> {{ player.name }}</p>
+                        <p><strong>Jersey Number:</strong> #{{ player.number }}</p>
+                        <p><strong>Position:</strong> {{ player.position }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card bg-base-200 shadow-md">
+                <div class="card-body">
+                    <h3 class="card-title text-lg text-secondary">Team Information</h3>
+                    <div class="space-y-2">
+                        <p><strong>Team:</strong> 
+                            <a href="{% url 'NFL:team_detail' player.team.pk %}" class="link link-secondary">
+                                {{ player.team.name }}
+                            </a>
+                        </p>
+                        <p><strong>Venue:</strong> {{ player.team.venue }}</p>
+                        <p><strong>Owner:</strong> {{ player.team.owner_name }}</p>
+                        <p><strong>Stadium:</strong> 
+                            <a href="{% url 'NFL:stadium_detail' player.team.stadium.pk %}" class="link link-info">
+                                {{ player.team.stadium.name }}
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="divider">Related Actions</div>
+        
+        <div class="flex flex-wrap gap-2 justify-center">
+            <a href="{% url 'NFL:team_detail' player.team.pk %}" class="btn btn-outline btn-secondary">
+                View Team Details
+            </a>
+            <a href="{% url 'NFL:player_list' %}" class="btn btn-outline btn-info">
+                View All Players
+            </a>
+            <a href="{% url 'NFL:stadium_detail' player.team.stadium.pk %}" class="btn btn-outline btn-accent">
+                View Stadium
+            </a>
+        </div>
+        
+        <div class="card-actions justify-end mt-6">
+            <a href="{% url 'NFL:player_list' %}" class="btn btn-outline">Back to Players</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
