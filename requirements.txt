@@ -1,0 +1,28 @@
+# Core Django Framework
+Django==5.2.5
+
+# Database
+psycopg2-binary==2.9.9
+
+# Development Tools
+django-browser-reload==1.12.1
+
+# Frontend/CSS
+django-tailwind[reload]==3.8.0
+
+# Production Server (optional)
+gunicorn==21.2.0
+
+# Environment Variables (recommended)
+python-decouple==3.8
+
+# Security (recommended for production)
+django-environ==0.11.2
+
+# Testing (optional)
+pytest==7.4.3
+pytest-django==4.7.0
+
+# Development Dependencies (optional)
+black==23.11.0
+flake8==6.1.0
